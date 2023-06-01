@@ -7,17 +7,17 @@ def Xnplus1_b(f, x0:float, b:float) -> float:
 def Xnplus1_a(f, x0:float, a:float) -> float:
     return x0-(f(x0)/(f(x0)-f(a)))*(x0-a)
     
-def siecznych_a(a:float, x0:float, f, epsilon:float) -> float:
+def siecznych_a(a:float, x0:float, f, epsilon:float, interacje:int) -> float:
     x1 = Xnplus1_a(f, x0, a)
     if abs(f(x1)) < epsilon:
-        return x1
-    return siecznych_a(a, x1, f, epsilon)
+        return x1, interacje
+    return siecznych_a(a, x1, f, epsilon, interacje+1)
 
-def siecznych_b(x0:float, b:float, f, epsilon:float) -> float:
+def siecznych_b(x0:float, b:float, f, epsilon:float, interacje:int) -> float:
     x1 = Xnplus1_b(f, x0, b)
     if abs(f(x1)) < epsilon:
-        return x1
-    return siecznych_b(x1, b, f, epsilon)
+        return x1, interacje
+    return siecznych_b(x1, b, f, epsilon, interacje+1)
 
 
 def siecznych(a:float, b:float, f, epsilon:float) -> float:
@@ -37,12 +37,17 @@ def siecznych(a:float, b:float, f, epsilon:float) -> float:
     """
     if not warunek(a, b, f):
         raise Exception("Niepoprawny warunek początkowy")
-        
+    
+    iteracje = 1
     if (f(a)>0 and d_fun(f, a)>0) or (f(a) < 0 and d_fun(f, a) < 0):
-        return siecznych_a(a, b, f, epsilon)
+        return siecznych_a(a, b, f, epsilon, iteracje)
     else:
-        return siecznych_b(a, b, f, epsilon)
+        return siecznych_b(a, b, f, epsilon, iteracje)
         
     
         
+print(siecznych(-10, -3, lambda x: x**2+4.1*x -9, 0.1))
 print(siecznych(-10, -3, lambda x: x**2+4.1*x -9, 0.05))
+print(siecznych(-10, -3, lambda x: x**2+4.1*x -9, 0.01))
+print(siecznych(-10, -3, lambda x: x**2+4.1*x -9, 0.005))
+print(siecznych(-10, -3, lambda x: x**2+4.1*x -9, 0.001))

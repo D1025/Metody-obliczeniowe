@@ -6,11 +6,11 @@ def Xnplus1(f, x:float) -> float:
     """
     return x - f(x)/d_fun(f, x)
 
-def interuj(f, x0:float, epsilon:float) -> float:
+def interuj(f, x0:float, epsilon:float, iteracje:int) -> float:
     x1 = Xnplus1(f, x0)
     if abs(f(x1))<epsilon or abs(x1-x0) < epsilon:
-        return x1
-    return interuj(f, x1, epsilon)
+        return x1, iteracje
+    return interuj(f, x1, epsilon, iteracje+1)
     
 
 
@@ -39,11 +39,16 @@ def statycznych(a:float, b:float, f, epsilon:float) -> float:
         x0 = a
     else:
         x0 = b
+    iteracje = 1
+    return interuj(f, x0, epsilon, iteracje)
     
-    return interuj(f, x0, epsilon)
     
-    
+print(statycznych(-10, -3, lambda x: x**2+4.1*x -9, 0.1))
 print(statycznych(-10, -3, lambda x: x**2+4.1*x -9, 0.05))
+print(statycznych(-10, -3, lambda x: x**2+4.1*x -9, 0.01))
+print(statycznych(-10, -3, lambda x: x**2+4.1*x -9, 0.005))
+print(statycznych(-10, -3, lambda x: x**2+4.1*x -9, 0.001))
+
     
     
     
